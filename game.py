@@ -47,13 +47,13 @@ class Game:     # handles the main game window + the state
                     self.running = False
             
     def update(self):
-        self.game_screens[self.current].update()
+        self.game_screens[self.current].update()   # only current game state is updated
     
     def gamedrawing(self):
         self.game_screens[self.current].draw()
-        pygame.display.flip()
+        pygame.display.flip()      #draw method to the ONLY active screen
         
-    def run_game(self):
+    def run_game(self):  # essentially just runs the gmae loop
         while self.running:
             self.handle_input()
             self.update()
@@ -64,7 +64,7 @@ class Game:     # handles the main game window + the state
         sys.exit()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__"   # bascially just makes sure only code in this file is being executed
     my_game = Game(title="Dusk Dashers", bg_color=(30, 40, 80))
     print("Game starting - press ESC to return to menu!")
     my_game.run_game()
