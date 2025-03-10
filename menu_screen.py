@@ -81,7 +81,7 @@ class MenuScreen:   #represents menu screen, backgrounds, buttons and text
                 return action
         return None
     
-    def update(self, mouse_pos):
+    def update(self, mouse_pos):  # For future updates integrate them here
        
         pass
        #draw to render the menu screen
