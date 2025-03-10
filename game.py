@@ -64,7 +64,7 @@ class Game:     # handles the main game window + the state
         sys.exit()
 
 
-if __name__ == "__main__":   # bascially just makes sure only code in this file is being executed
+if __name__ == "__main__":   # basically just makes sure only code in this file is being executed
     my_game = Game(title="Dusk Dashers", bg_color=(30, 40, 80))
     print("Game starting - press ESC to return to menu!")
     my_game.run_game()
