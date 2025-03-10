@@ -53,7 +53,7 @@ class Game:     # handles the main game window + the state
         self.game_screens[self.current].draw()
         pygame.display.flip()      #draw method to the ONLY active screen
         
-    def run_game(self):  # essentially just runs the gmae loop
+    def run_game(self):  # essentially just runs the game loop
         while self.running:
             self.handle_input()
             self.update()
