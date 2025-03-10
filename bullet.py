@@ -1,6 +1,6 @@
 import pygame
 
-class Bullet:
+class Bullet:    # manages individual bullet behavior, movement, collision, detection and rendering
     def __init__(self, x, y, direction, world_x):
         self.world_x = world_x  
         self.x = x  

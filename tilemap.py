@@ -1,13 +1,13 @@
 import pygame
 import os
 
-# Define tile types
+# What each tile correlates to
 EMPTY = 0
 GROUND = 1
 BRICK = 2
 COIN = 3
 PIPE = 4
-BLOCK = 5
+BLOCK = 5            # creates a future of expandability for Dusk Dashers new levels can be created
 
 
 TILE_COLORS = {
@@ -27,11 +27,11 @@ class TileMap:
         self.width = 0
         self.height = 0
         
-        # Load coin image
+        # Loading the assets i need
         self.coin_image = pygame.image.load('coin.png')
         self.coin_image = pygame.transform.scale(self.coin_image, (self.tile_size, self.tile_size))
         
-        # Load tile images
+        # Loading the tiles i need
         self.tile_images = {
             GROUND: self.create_colored_tile(TILE_COLORS[GROUND]),
             BRICK: self.create_colored_tile(TILE_COLORS[BRICK]),
@@ -40,7 +40,7 @@ class TileMap:
             BLOCK: self.create_colored_tile(TILE_COLORS[BLOCK])
         }
         
-        # Create a small Super Mario style level
+        # A super mario style level
         self.create_level()
         
     def create_colored_tile(self, color):
@@ -51,7 +51,7 @@ class TileMap:
         pygame.draw.rect(surf, (0, 0, 0), (0, 0, self.tile_size, self.tile_size), 1)
         return surf
 
-    def create_level(self):
+    def create_level(self):   #first level which has not as much difficulty as the next
       
         level = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -85,8 +85,8 @@ class TileMap:
         self.map_surface = pygame.Surface((map_width, map_height), pygame.SRCALPHA)
         self.render_map()
         
-    def create_level2(self):
-        """Create the second level with a more challenging layout"""
+    def create_level2(self): # Significantly more challenging than the first level
+
         level2 = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -113,7 +113,7 @@ class TileMap:
         self.render_map() 
         
     def render_map(self):
-        """Render the entire map to a surface"""
+        #pushed the map to the front
         for y in range(self.height):
             for x in range(self.width):
                 tile_type = self.tiles[y][x]
@@ -124,7 +124,7 @@ class TileMap:
                     )
     
     def draw(self, surface, player_x, screen_width):
-        """Draw the visible portion of the map"""
+     #visivle portion of the map is in frame
        
         self.scroll_x = player_x - screen_width // 2
         
@@ -136,11 +136,11 @@ class TileMap:
         surface.blit(self.map_surface, (-self.scroll_x, 0))
         
     def get_scroll_x(self):
-        """Return the current horizontal scroll position"""
+        # returning the current position of the scroll horizontal
         return self.scroll_x
     
     def check_collision(self, rect):
-        """Check if a rectangle collides with any solid tiles in the map"""
+        #check if a rectangle collides
        
         tile_x1 = max(0, int(rect.left / self.tile_size))
         tile_x2 = min(self.width - 1, int(rect.right / self.tile_size))
