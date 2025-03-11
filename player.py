@@ -1,8 +1,8 @@
 import pygame
 import os
-from bullet import Bullet
+from bullet import Bullet    # for the shooting mechanics
 
-class Player:
+class Player:    #all the characteristics the player would have
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -21,7 +21,7 @@ class Player:
         self.jmpBuff = 0
         self.jmpMax = 10
         
-        self.totalJmp = 2
+        self.totalJmp = 2    #the double jump mechanic
         self.currentJmps = 0
         
         self.shoot_cooldown = 0
@@ -59,7 +59,7 @@ class Player:
         
         self.is_hit = False
     
-    def init_sounds(self):
+    def init_sounds(self):   #soundd effects for the gun and jumping
         try:
             self.fire_sound = pygame.mixer.Sound("sounds/fire.wav")
             self.jump_sound = pygame.mixer.Sound("sounds/jump.wav")
@@ -68,7 +68,7 @@ class Player:
             self.fire_sound = None
             self.jump_sound = None
     
-    def playermov(self, keys_pressed, tilemap):
+    def playermov(self, keys_pressed, tilemap):    #interations with the map
         self.xspeed = 0
         if keys_pressed[pygame.K_LEFT] or keys_pressed[pygame.K_a]:
             self.xspeed = -self.speed
@@ -86,7 +86,7 @@ class Player:
         
         if self.jmpBuff > 0:
             self.jmpBuff -= 1
-            if self.currentJmps < self.totalJmp:
+            if self.currentJmps < self.totalJmp:   #double jump mechanic
                 self.yspeed = self.jmpHight
                 self.currentJmps += 1
                 self.jmpBuff = 0
@@ -115,7 +115,7 @@ class Player:
         player_rect = pygame.Rect(self.mapX, next_y, self.width, self.height)
         collision, tile_rect = tilemap.check_collision(player_rect)
         
-        if collision:
+        if collision:    #collision detection
             if self.yspeed > 0:
                 self.y = tile_rect.top - self.height
                 self.isground = True
@@ -129,10 +129,10 @@ class Player:
         self.x = self.mapX - tilemap.get_scroll_x()
     
     def playerJump(self):
-        if self.currentJmps < self.totalJmp:
+        if self.currentJmps < self.totalJmp:    #implementing the double jump
             self.jmpBuff = self.jmpMax
     
-    def shoot(self):
+    def shoot(self):     #shooting mechanics from bullet
         if self.shoot_cooldown == 0:
             bullet_x = self.x + (self.width - 10 if self.direction == "right" else 0)
             bullet_y = self.y + self.height // 2 - 5
@@ -145,11 +145,11 @@ class Player:
             
             self.shoot_cooldown = self.shoot_cooldown_time
     
-    def updateblt(self, tilemap):
+    def updateblt(self, tilemap):   #cooldown timer for shooting
         if self.shoot_cooldown > 0:
             self.shoot_cooldown -= 1
         
-        for bullet in self.bullets[:]:
+        for bullet in self.bullets[:]:   #removing bullets that are not on screen
             bullet.update(tilemap)
             if not bullet.active:
                 self.bullets.remove(bullet)
@@ -161,10 +161,10 @@ class Player:
                 self.t_anim = 0
                 self.activePNG = (self.activePNG + 1) % 4
     
-    def hashit(self):
+    def hashit(self):      #sets the player hit status to true
         self.is_hit = True
     
-    def draw(self, surface):
+    def draw(self, surface):      #incrementing the animation timer when the player moves
         frames = self.Lframes if self.direction == "left" else self.Rframes
         
         if frames:
@@ -173,10 +173,10 @@ class Player:
         for bullet in self.bullets:
             bullet.draw(surface)
     
-    def playerRect(self):
+    def playerRect(self):  #represents the players position + size
         return pygame.Rect(self.mapX, self.y, self.width, self.height)
     
-    def resetPlayer(self, x, y):
+    def resetPlayer(self, x, y):    #resets the player to the x and y coordinates
         self.mapX = x
         self.y = y
         self.xspeed = 0
