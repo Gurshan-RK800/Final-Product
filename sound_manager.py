@@ -1,6 +1,6 @@
 import pygame
 
-
+   # all audio used throughout is managed here
 class SoundManager:
     def __init__(self):
        
@@ -20,7 +20,7 @@ class SoundManager:
             "fire": "sounds/gunshot.mp3",    
         }
         
-       
+           # looping through the sound files to load each sound file
         for sound_name, sound_path in sound_files.items():
             self.sounds[sound_name] = pygame.mixer.Sound(sound_path)
             
@@ -34,7 +34,7 @@ class SoundManager:
       
     
     def soundplaying(self, sound_name):
-        
+           # checks if the requested sound actually exists in self.sounds.
         if sound_name in self.sounds and self.sounds[sound_name]:
             pygame.mixer.Sound.play(self.sounds[sound_name])
     

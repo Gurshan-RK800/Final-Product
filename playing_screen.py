@@ -6,7 +6,7 @@ from tilemap import TileMap, COIN, EMPTY
 from score import Score  
 from sound_manager import SoundManager  
 
-class PlayingScreen(Screen):
+class PlayingScreen(Screen):  # tile map, player, enemies, score and sounds
     def __init__(self, surface):
         super().__init__(surface)
         self.tilemap = TileMap(tile_size=32)
@@ -36,7 +36,7 @@ class PlayingScreen(Screen):
             print("Warning: hit.mp3 sound file not found")
             self.hit_sound = None
     
-    def settingEnemies(self):
+    def settingEnemies(self):    #setting up the enemies
         self.enemies = []
         self.enemies.append(Enemy(300, 350, 300, 500))
         self.enemies.append(Enemy(600, 350, 550, 750))
@@ -46,25 +46,25 @@ class PlayingScreen(Screen):
         self.enemies.append(Enemy(2000, 350, 1950, 2150))
         
     def nextlevel(self):
-        """Move to the next level if available"""
+        #move to the next level if available
         if self.current_level < self.max_level:
             self.current_level += 1
             if self.current_level == 2:
                 self.tilemap.create_level2()
-            # Reset player position
+            # reseting the players position
             self.player.resetPlayer(self.player_start_x, self.player_start_y)
             # Reset enemies for the new level
             self.settingEnemies()
             return True
         return False
     def islevelcompleted(self):
-        """Check if player has reached the end of the level"""
+        #chekcs if the player has reached the end of the level
         # For example, if player reaches far right of map
         if self.player.mapX > (self.tilemap.width * self.tilemap.tile_size) - 100:
             return self.nextlevel()
         return False
     
-    def gamerestart(self):
+    def gamerestart(self):   #resetting to the first level
        
         self.current_level = 1
         
@@ -77,7 +77,7 @@ class PlayingScreen(Screen):
         
         self.score.resetinglives()
     
-    def handle_events(self, event):
+    def handle_events(self, event):   #player inputs
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 
@@ -95,7 +95,7 @@ class PlayingScreen(Screen):
         
         return None
     
-    def coinCollect(self):
+    def coinCollect(self):  #player position if near any coins
         player_rect = self.player.playerRect()
         
         tile_x1 = max(0, int(player_rect.left / self.tilemap.tile_size))
@@ -116,7 +116,7 @@ class PlayingScreen(Screen):
                     
                     self.tilemap.clear_tile(x, y)
     
-    def bulletcollision(self):
+    def bulletcollision(self): # bullet hitting enemy or tile
         for enemy in self.enemies[:]:
             enemy_rect = enemy.get_rect()
             for bullet in self.player.bullets[:]:
@@ -136,14 +136,14 @@ class PlayingScreen(Screen):
                     bullet.active = False
                     self.P_handle()
     
-    def enemyCollision(self):
+    def enemyCollision(self):  #player running into an enemy
         player_rect = self.player.playerRect()
         for enemy in self.enemies:
             if player_rect.colliderect(enemy.get_rect()):
                 self.P_handle()
                 break
     
-    def P_handle(self):
+    def P_handle(self): # player lives
         if not self.score.lifelost():
             self.GameOver()
         else:
@@ -152,12 +152,12 @@ class PlayingScreen(Screen):
     def resetplayer(self):
         self.player.resetPlayer(self.player_start_x, self.player_start_y)
     
-    def GameOver(self):
+    def GameOver(self):  #plays the game over sound + restarting if no lives
         self.sound_manager.soundplaying("game_over")
         self.gamerestart()
         self.sound_manager.bgmusic()
     
-    def update(self, game_data=None):
+    def update(self, game_data=None):  #movement actions, animations + level completion
         keys_pressed = pygame.key.get_pressed()
         
         self.player.playermov(keys_pressed, self.tilemap)
@@ -177,7 +177,7 @@ class PlayingScreen(Screen):
         if self.player.y > self.height:
             self.P_handle()
     
-    def draw(self):
+    def draw(self): # draws background, tiles, enemies, player onto screen
         self.surface.blit(self.background_image, (0, 0))
         
         self.tilemap.draw(self.surface, self.player.mapX, self.width)
