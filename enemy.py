@@ -3,7 +3,7 @@ import os
 from bullet import Bullet   # for consistency
 import random
 
-class Enemy:
+class Enemy:  #defines the enemy's characteristics
     def __init__(self, x, y, patrol_start_x, patrol_end_x, tilemap=None):
         self.x = x
         self.y = y
@@ -44,7 +44,7 @@ class Enemy:
         self.bullets = []
         self.shoot_range = 1000
 
-    def update(self, tilemap, player=None):
+    def update(self, tilemap, player=None):   #positon, animations + shooting behavior
 
         self.tilemap = tilemap
 
@@ -62,7 +62,7 @@ class Enemy:
                 next_x = self.patrol_start_x
 
 
-        if self.tilemap:
+        if self.tilemap:    #tile map collision handling
 
             feet_x = next_x + self.width // 2  # Center of enemy at next position
             ground_y = (self.tilemap.height - 1) * self.tilemap.tile_size
@@ -110,7 +110,7 @@ class Enemy:
             if not bullet.active:
                 self.bullets.remove(bullet)
 
-    def enemyshooting(self):
+    def enemyshooting(self):    #determining where the bullet should spawn
         if self.tilemap:
             ground_y = (self.tilemap.height - 1) * self.tilemap.tile_size
             bullet_y = ground_y - self.height // 2 - 5
@@ -121,7 +121,7 @@ class Enemy:
         new_bullet = Bullet(self.x + bullet_x_offset, bullet_y, self.direction, self.world_x + bullet_x_offset)
         self.bullets.append(new_bullet)
 
-    def draw(self, surface):
+    def draw(self, surface):  #enemy is only drawn in specific boundary
         if self.x + self.width >= 0 and self.x <= 800:
             frames = self.left_frames if self.direction == "left" else self.right_frames
 
@@ -136,12 +136,12 @@ class Enemy:
         for bullet in self.bullets:
             bullet.draw(surface)
 
-    def get_rect(self):
+    def get_rect(self):  #a rectangle representing the collision box
         if self.tilemap:
             ground_y = (self.tilemap.height - 1) * self.tilemap.tile_size
             collision_y = ground_y - self.height
             return pygame.Rect(self.world_x, collision_y, self.width, self.height)
         return pygame.Rect(self.world_x, self.y, self.width, self.height)
 
-    def get_bullets(self):
+    def get_bullets(self):  #returns list of all active bullets for enemy
         return self.bullets
